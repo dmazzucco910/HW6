@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Davide Mazzucco / 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,9 +150,10 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
-
-        // YOUR CODE GOES HERE
-        return null;
+        Node newN = new Node(e, priority, tree.size()); //create a new node with element and priority given
+        tree.add(newN); //add node to the tree list
+        pullUp(newN.idx); //re-heap to keep min-heap property
+        return newN;      //return new node of the new inserted element
     }
 
 
@@ -167,8 +168,11 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        for (Node node : tree) {//go through nodes in tree
+            if (node.value.equals(e) && node.isValid()) {//check if the value of the node is e and if handle is true
+                return true;//if so returns true if not false
+            }
+        }
         return false;
     }
 

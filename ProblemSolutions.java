@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Davide Mazzucco / 001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,11 +64,28 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
+      //initializing priority queue in reverse order
+      PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      //adding boulder to queue
+      for (int boulder : boulders) {
+          queue.add(boulder);
+      }
+
+      //Process boulders until one or none is left
+      while (queue.size() > 1) {//check if there are at least 2 boulders
+          int x = queue.poll(); //get the heaviest
+          int y = queue.poll(); //get the second heaviest
+          if (x != y) {//check if they don't match, if so perform the operation
+              queue.add(x - y); //
+          }//if they are equal they will just be removed
+      }
+
+      if (queue.isEmpty()) {//return 0 if it is empty/ no boulders
+          return 0;
+      } else {
+          return queue.peek();//return last boulder
+      }
   }
 
 
@@ -91,10 +108,16 @@ public class ProblemSolutions {
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        Set<String> test = new HashSet<>();
+        Set<String> dup = new TreeSet<>(); //use to treeset to maintain sorted ascending order
+
+        for (String str : input) {//move through arraylist
+            if (!test.add(str)) { //check if adding the string fails, if it does it means there is a duplicate
+                dup.add(str);
+            }
+        }
+
+        return new ArrayList<>(dup); //convert set to array list
 
     }
 
@@ -131,9 +154,35 @@ public class ProblemSolutions {
 
     public static ArrayList<String> pair(int[] input, int k) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+
+        HashSet<String> unique = new HashSet<>();//set to store unique pairs
+        HashSet<Integer> seen = new HashSet<>();//set to track seen numbers
+        ArrayList<String> result = new ArrayList<>();//final result
+
+        for (int n : input) {//go through numbers
+            int complement = k - n;//find k complement
+
+
+            if (seen.contains(complement)) {//check if numbers has been seen
+                //order the pairs to have min first and max second
+                int first = Math.min(n, complement);
+                int second = Math.max(n, complement);
+                //create string to return
+                String pairString = "(" + first + ", " + second + ")";
+
+                //add pair to the set to make sure they are unique
+                unique.add(pairString);
+            }
+
+            //add to numbers
+            seen.add(n);
+        }
+
+        //add all unique pairs to results array list
+        result.addAll(unique);
+        //sort result
+        Collections.sort(result);
+
+        return result;
     }
 }
